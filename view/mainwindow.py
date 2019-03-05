@@ -6,7 +6,7 @@ import serial
 import serial.tools.list_ports
 
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMessageBox, QPushButton, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsRectItem, QGraphicsEllipseItem
+from PyQt5.QtWidgets import QMessageBox, QPushButton, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsRectItem, QGraphicsEllipseItem, QTableWidgetItem
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QObject, QRectF
 from PyQt5.QtGui import QBrush, QPen, QColor
 
@@ -22,8 +22,10 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(Main_Window, self).__init__(parent=parent)
         self.setupUi(self)
+        
+        self.init_anchor()
 
-        self.init()
+        self.init_serial()
         self.setWindowTitle("UWB串口助手")
         self.serial_uwb = serial.Serial()
         self.port_check()
@@ -33,7 +35,8 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphics()
         
 
-    def init(self):
+    def init_serial(self):
+        """ 初始化串口 """
         # 串口检测按钮
         self.s1__box_1.clicked.connect(self.port_check)
         # 串口信息显示
@@ -45,6 +48,37 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         # 接受数据定时器
         self.timer_receive = QTimer(self)
         self.timer_receive.timeout.connect(self.data_receive)
+    
+    def init_anchor(self):
+        """ 初始化基站 """
+        self.anchorTable.setItem(0,0, QTableWidgetItem("基站编号"))
+        self.anchorTable.setItem(0,1, QTableWidgetItem("X轴 / m"))
+        self.anchorTable.setItem(0,2, QTableWidgetItem("Y轴 / m"))
+        self.anchorTable.setItem(0,3, QTableWidgetItem("Z轴 / m"))
+        self.anchorTable.setItem(1,0, QTableWidgetItem("anchor_0"))
+        self.anchorTable.setItem(2,0, QTableWidgetItem("anchor_1"))
+        self.anchorTable.setItem(3,0, QTableWidgetItem("anchor_2"))
+        self.anchorTable.setItem(4,0, QTableWidgetItem("anchor_3"))
+        
+        # 初始化anchor_0的X,Y,Z轴
+        self.anchorTable.setItem(1,1, QTableWidgetItem("0.00"))
+        self.anchorTable.setItem(1,2, QTableWidgetItem("0.00"))
+        self.anchorTable.setItem(1,3, QTableWidgetItem("1.50"))
+
+        # 初始化anchor_1的X,Y,Z轴
+        self.anchorTable.setItem(2,1, QTableWidgetItem("3.75"))
+        self.anchorTable.setItem(2,2, QTableWidgetItem("0.00"))
+        self.anchorTable.setItem(2,3, QTableWidgetItem("1.50"))
+
+        # 初始化anchor_2的X,Y,Z轴
+        self.anchorTable.setItem(3,1, QTableWidgetItem("0.00"))
+        self.anchorTable.setItem(3,2, QTableWidgetItem("7.50"))
+        self.anchorTable.setItem(3,3, QTableWidgetItem("1.50"))
+
+        # 初始化anchor_3的X,Y,Z轴
+        self.anchorTable.setItem(4,1, QTableWidgetItem("0.00"))
+        self.anchorTable.setItem(4,2, QTableWidgetItem("0.00"))
+        self.anchorTable.setItem(4,3, QTableWidgetItem("1.50"))
 
     def port_check(self):
         """ 检测所有串口 """
@@ -56,7 +90,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
             self.s1__box_2.addItem(port[0])
         if len(self.com_dict) == 0:
             self.open_serial_button.setEnabled(False)
-
+        
     def port_open(self):
         """ 打开串口 """
         # self.serial_uwb.port = "COM3"  #串口号
@@ -65,6 +99,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.serial_uwb.bytesize = int(8)  # 数据位
         self.serial_uwb.parity = "N"  # 奇偶性，即校验位
         self.serial_uwb.stopbits = int(1)  # 停止位
+        
 
         # sudo chmod a+rw /dev/ttyACM0 给予权限
 
@@ -144,27 +179,23 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
                                   "，标签x到基站1的距离：%d" % (range_1) +
                                   "，标签x到基站2的距离：%d" % (range_2) + '\n')
 
-                            # anchor_0 = np.array([0, 0], dtype=np.int64)
-                            # anchor_1 = np.array([7500, 0], dtype=np.int64)
-                            # anchor_2 = np.array([0, 5000], dtype=np.int64)
-                            # anchor_3 = np.array()
+                            anchor = [rc.vec3d(),rc.vec3d(),rc.vec3d(),rc.vec3d()]
+                            # anchor_1.x = 3.75  # 单位：米
+                            
+                            for i in range(4):
+                                anchor[i].x = np.float(self.anchorTable.item(i+1,1).text()) # 取 anchorTable 其中 cell 的值
+                                anchor[i].y = np.float(self.anchorTable.item(i+1,2).text())
+                                anchor[i].z = np.float(self.anchorTable.item(i+1,3).text())
 
-                            anchor_0 = rc.vec3d()
-                            anchor_1 = rc.vec3d()
-                            anchor_2 = rc.vec3d()
-                            anchor_3 = rc.vec3d()
-                            anchor_1.x = 3.75  # 单位：米
-                            anchor_2.y = 7.5
+
+                            # anchor_2.y = 7.5
                             tag_position = rc.vec3d()
                             
                             tag_position = self.getLocation(
-                                anchor_0, anchor_1, anchor_2, anchor_3,  range_0, range_1, range_2, range_3, count)
-                            # if (tag_position[0]-anchor_2[0])**2 + (tag_position[1]-anchor_2[1])**2 > range_2:
+                                anchor[0], anchor[1], anchor[2], anchor[3],  range_0, range_1, range_2, range_3, count)
                             
                             print("v = [ %f , %f, %f]" % (tag_position.x, tag_position.y, tag_position.z))
 
-
-                        
                             self.animation(
                                 [tag_position.x, tag_position.y])
 
@@ -315,7 +346,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         delta = newPos - oldPos
         self.graphicsView.translate(delta.x(), delta.y())
 
-    
+
 
 if __name__ == '__main__':
     main_app = QtWidgets.QApplication(sys.argv)

@@ -160,7 +160,7 @@
       <bool>false</bool>
      </attribute>
      <attribute name="verticalHeaderDefaultSectionSize">
-      <number>18</number>
+      <number>25</number>
      </attribute>
      <attribute name="verticalHeaderHighlightSections">
       <bool>true</bool>
@@ -178,12 +178,12 @@
      <column/>
      <column/>
     </widget>
-    <widget class="QTableWidget" name="anchorTable_2">
+    <widget class="QTableWidget" name="tagTable">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>571</width>
+       <width>581</width>
        <height>151</height>
       </rect>
      </property>
@@ -211,7 +211,7 @@
       <bool>true</bool>
      </property>
      <property name="rowCount">
-      <number>4</number>
+      <number>10</number>
      </property>
      <property name="columnCount">
       <number>8</number>
@@ -237,6 +237,12 @@
      <attribute name="verticalHeaderMinimumSectionSize">
       <number>18</number>
      </attribute>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
      <row/>
      <row/>
      <row/>
