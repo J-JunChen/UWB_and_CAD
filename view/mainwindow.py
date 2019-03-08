@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QMessageBox, QPushButton, QGraphicsView, QGraphicsSc
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QObject, QRectF
 from PyQt5.QtGui import QBrush, QPen, QColor
 
-from Ui_MainWindow import Ui_MainWindow
+from Ui_untitled import Ui_MainWindow
 
 dir_path = os.path.dirname(os.path.realpath(__file__))  # 获取当前路径
 former_path = dir_path[:dir_path.rfind('/')]
@@ -24,6 +24,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         
         self.init_anchor()
+        self.init_vertex()
 
         self.init_serial()
         self.setWindowTitle("UWB串口助手")
@@ -33,6 +34,8 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphicsView.scale(1,-1) # x轴倒转
         self.init_graphicsView()
         self.graphics()
+
+        # self.plainTextEdit.set
         
 
     def init_serial(self):
@@ -79,6 +82,19 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.anchorTable.setItem(4,1, QTableWidgetItem("0.00"))
         self.anchorTable.setItem(4,2, QTableWidgetItem("0.00"))
         self.anchorTable.setItem(4,3, QTableWidgetItem("1.50"))
+    
+    def init_vertex(self):
+        """ 初始化顶点 """
+        self.vertexTable.setItem(0, 0, QTableWidgetItem("顶点编号"))
+        self.vertexTable.setItem(0, 1, QTableWidgetItem("X轴 / m"))
+        self.vertexTable.setItem(0, 2, QTableWidgetItem("Y轴 / m"))
+        self.vertexTable.setItem(0, 3, QTableWidgetItem("Z轴 / m"))
+        for i in range(10):
+            self.vertexTable.setItem(i+1, 0, QTableWidgetItem("vertex_"+str(i)))
+            self.vertexTable.setItem(i+1, 1, QTableWidgetItem("0.00"))
+            self.vertexTable.setItem(i+1, 2, QTableWidgetItem("0.00"))
+            self.vertexTable.setItem(i+1, 3, QTableWidgetItem("0.00"))
+        
 
     def port_check(self):
         """ 检测所有串口 """
@@ -99,8 +115,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.serial_uwb.bytesize = int(8)  # 数据位
         self.serial_uwb.parity = "N"  # 奇偶性，即校验位
         self.serial_uwb.stopbits = int(1)  # 停止位
-        
-
+            
         # sudo chmod a+rw /dev/ttyACM0 给予权限
 
         try:
