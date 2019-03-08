@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QMessageBox, QPushButton, QGraphicsView, QGraphicsSc
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QObject, QRectF
 from PyQt5.QtGui import QBrush, QPen, QColor
 
-from Ui_untitled import Ui_MainWindow
+from Ui_MainWindow import Ui_MainWindow
 
 dir_path = os.path.dirname(os.path.realpath(__file__))  # 获取当前路径
 former_path = dir_path[:dir_path.rfind('/')]
