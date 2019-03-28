@@ -1,21 +1,25 @@
 import sys
 import os
 import numpy as np
+import cv2 as cv
 
 import serial
 import serial.tools.list_ports
 
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMessageBox, QPushButton, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsRectItem, QGraphicsEllipseItem, QTableWidgetItem
+from PyQt5.QtWidgets import QMessageBox, QPushButton, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsRectItem, QGraphicsEllipseItem, QTableWidgetItem, QFileDialog
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QObject, QRectF
-from PyQt5.QtGui import QBrush, QPen, QColor
+from PyQt5.QtGui import QBrush, QPen, QColor, QPixmap
 
 from Ui_MainWindow import Ui_MainWindow
 
 dir_path = os.path.dirname(os.path.realpath(__file__))  # 获取当前路径
 former_path = dir_path[:dir_path.rfind('/')]
 sys.path.append(former_path+'/network')  # ui视图层
+sys.path.append(former_path+'/cad') # cad操作层
 import RTLSClient as rc
+import Pdf2img
+import Analyse_Img as ai
 
 
 class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -25,6 +29,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         
         self.init_anchor()
         self.init_vertex()
+        self.init_brick()
 
         self.init_serial()
         self.setWindowTitle("UWB串口助手")
@@ -35,8 +40,52 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_graphicsView()
         self.graphics()
 
-        # self.plainTextEdit.set
-        
+        self.setMouseTracking(True)
+        self.graphicsView.setMouseTracking(True)
+        print(self.graphicsView.hasMouseTracking())
+
+        self.choose_pdf_Button.clicked.connect(self.choose_pdf_Button_clicked) # 点击选择
+      
+    
+    def choose_pdf_Button_clicked(self):
+        """  
+            选择PDF文件按钮事件
+        """
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileRoad, _ = QFileDialog.getOpenFileName(
+            self,
+            "选择CAD文件",
+            "",
+            "PDF Files (*.pdf) ;; JPG Files (*.jpg)",
+            options=options)
+        if fileRoad:
+            fileName = os.path.split(fileRoad)[1]  #分离文件名
+            self.cad_label.setText(fileName)  #修改label 的text
+            # self.load_image(fileRoad)
+        pictureName = Pdf2img.pdf2img(fileName)
+        src = cv.imread(pictureName)
+        resizeName = ai.resize(src, 0.47)
+        src = cv.imread(resizeName)
+        cutName = ai.cut_picture_roi(src)
+        self.load_image(cutName)
+
+    def load_image(self, image):
+        """  
+            加载图片：
+                1、每次load_image，就清空原来的label.clear()
+                2、setPixmap(pixmap.scaled(size(),KeepAsceptRatio))表示按图像比例显示
+        """
+        # image_label = QLabel(self.image_label)
+
+        self.image_label.clear() #每次选择
+        pixmap = QPixmap(image)
+       
+        self.image_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.image_label.setPixmap(
+            pixmap.scaled(self.image_label.size(),
+                          QtCore.Qt.KeepAspectRatio))  #radio：根据图像比例显示图片
+    
 
     def init_serial(self):
         """ 初始化串口 """
@@ -94,7 +143,34 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
             self.vertexTable.setItem(i+1, 1, QTableWidgetItem("0.00"))
             self.vertexTable.setItem(i+1, 2, QTableWidgetItem("0.00"))
             self.vertexTable.setItem(i+1, 3, QTableWidgetItem("0.00"))
+    
+    def init_brick(self):
+        """ 初始化砖块信息 """
+        self.brickTable.insertRow(0) # 列表加上一行
+        self.brickTable.setItem(0, 0, QTableWidgetItem("砖块编号"))
+        self.brickTable.setItem(0, 1, QTableWidgetItem("X轴 "))
+        self.brickTable.setItem(0, 2, QTableWidgetItem("Y轴 ")) 
+        self.brickTable.setItem(0, 3, QTableWidgetItem("已完成？"))
+        self.brickTable.setItem(0, 4, QTableWidgetItem("取消?"))
         
+        for i in range(20):
+            chkBoxItem = QTableWidgetItem()
+            chkBoxItem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+            chkBoxItem.setCheckState(QtCore.Qt.Unchecked)
+            self.brickTable.setItem(i+1, 4, chkBoxItem)
+
+        self.brickTable.itemClicked.connect(self.handleItemClicked)
+        self._list = []
+        
+    def handleItemClicked(self, item):
+        """ 点击取消按钮 """
+        if item.checkState() == QtCore.Qt.Checked:
+            print('"%s" checked' % item.text())
+            self._list.append(item.row())
+            print(self._list)
+        else:
+            print('"%s" Clicked' % item.text())
+
 
     def port_check(self):
         """ 检测所有串口 """
@@ -274,20 +350,26 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         global bricks  # 全局
         bricks = np.zeros((width_num*height_num, 5), dtype=int)  # 可利用json数据类型
 
+        
         """ 砖摆放，从x,y轴出发 """
         for j in range(height_num):
             for i in range(width_num):
 
-                self.brick_x = i*(self.brick_gap+brick_width)
+                self.brick_x = i*(self.brick_gap+brick_width)   
                 self.brick_y = j*(self.brick_gap+brick_height)
 
                 bricks[j * width_num + i] = [i, j, self.brick_x,
                                self.brick_y, 0]  # 填写每一块砖的信息
-                # print(bricks[i+j])
+                print(bricks[i+j])
 
                 rectangle_item = QGraphicsRectItem(
                     self.brick_x, self.brick_y, brick_width, brick_height)
                 scene.addItem(rectangle_item)
+
+                self.brickTable.setItem(j * width_num + i+1 , 0, QTableWidgetItem(str(j * width_num + i)))
+                self.brickTable.setItem(j * width_num + i+1 , 1, QTableWidgetItem(str(self.brick_x)))
+                self.brickTable.setItem(j * width_num + i+1 , 2, QTableWidgetItem(str(self.brick_y)))
+                self.brickTable.setItem(j * width_num + i+1 , 3, QTableWidgetItem("0"))
 
         print("robot_position: (%d" %
               robot_point[0]+"，%d" % robot_point[1]+")")

@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1224</width>
-    <height>832</height>
+    <width>1886</width>
+    <height>1114</height>
    </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <widget class="QGroupBox" name="formGroupBox">
     <property name="geometry">
      <rect>
@@ -95,10 +101,13 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
-      <width>861</width>
-      <height>571</height>
+      <y>250</y>
+      <width>791</width>
+      <height>791</height>
      </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
@@ -379,10 +388,10 @@ p, li { white-space: pre-wrap; }
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>220</y>
-      <width>341</width>
-      <height>561</height>
+      <x>820</x>
+      <y>780</y>
+      <width>1061</width>
+      <height>241</height>
      </rect>
     </property>
     <property name="title">
@@ -394,7 +403,7 @@ p, li { white-space: pre-wrap; }
        <x>20</x>
        <y>30</y>
        <width>291</width>
-       <height>171</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -466,10 +475,10 @@ p, li { white-space: pre-wrap; }
     <widget class="QTableWidget" name="vertexTable">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>230</y>
-       <width>291</width>
-       <height>331</height>
+       <x>330</x>
+       <y>30</y>
+       <width>311</width>
+       <height>191</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -544,6 +553,98 @@ p, li { white-space: pre-wrap; }
      <column/>
      <column/>
     </widget>
+    <widget class="QTableWidget" name="brickTable">
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>30</y>
+       <width>380</width>
+       <height>191</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>112</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>380</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="rowCount">
+      <number>21</number>
+     </property>
+     <property name="columnCount">
+      <number>5</number>
+     </property>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>72</number>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>70</number>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>27</number>
+     </attribute>
+     <attribute name="verticalHeaderHighlightSections">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>20</number>
+     </attribute>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <column/>
+     <column/>
+     <column/>
+     <column/>
+     <column/>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
@@ -593,7 +694,7 @@ p, li { white-space: pre-wrap; }
        <x>20</x>
        <y>70</y>
        <width>171</width>
-       <height>31</height>
+       <height>72</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -617,20 +718,112 @@ p, li { white-space: pre-wrap; }
       </item>
      </layout>
     </widget>
-    <zorder>textEdit_2</zorder>
-    <zorder>label_2</zorder>
-    <zorder>groupBox_3</zorder>
-    <zorder>horizontalLayoutWidget</zorder>
-    <zorder>graphicsView</zorder>
-    <zorder>horizontalLayoutWidget</zorder>
    </widget>
+   <widget class="QPushButton" name="choose_pdf_Button">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>720</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>选择PDF文件</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>10</y>
+      <width>561</width>
+      <height>651</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="image_label">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>图片显示位置</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_5">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>680</y>
+      <width>301</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>GroupBox</string>
+    </property>
+    <widget class="QPushButton" name="analyse_button">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>40</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>数据分析</string>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
+     </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="cad_label">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <zorder>formGroupBox</zorder>
+   <zorder>graphicsView</zorder>
+   <zorder>groupBox</zorder>
+   <zorder>groupBox_2</zorder>
+   <zorder>groupBox_3</zorder>
+   <zorder>groupBox_4</zorder>
+   <zorder>choose_pdf_Button</zorder>
+   <zorder>image_label</zorder>
+   <zorder>image_label</zorder>
+   <zorder>gridLayoutWidget</zorder>
+   <zorder>groupBox_5</zorder>
+   <zorder>image_label</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1224</width>
+     <width>1886</width>
      <height>23</height>
     </rect>
    </property>
