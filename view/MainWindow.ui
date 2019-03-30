@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1886</width>
+    <width>1861</width>
     <height>1114</height>
    </rect>
   </property>
@@ -115,7 +115,7 @@
      <rect>
       <x>270</x>
       <y>10</y>
-      <width>271</width>
+      <width>291</width>
       <height>201</height>
      </rect>
     </property>
@@ -127,7 +127,7 @@
       <rect>
        <x>10</x>
        <y>40</y>
-       <width>71</width>
+       <width>81</width>
        <height>20</height>
       </rect>
      </property>
@@ -140,7 +140,7 @@
       <rect>
        <x>20</x>
        <y>80</y>
-       <width>61</width>
+       <width>71</width>
        <height>20</height>
       </rect>
      </property>
@@ -166,7 +166,7 @@
       <rect>
        <x>60</x>
        <y>160</y>
-       <width>21</width>
+       <width>31</width>
        <height>20</height>
       </rect>
      </property>
@@ -174,10 +174,10 @@
       <string>=</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_3">
+    <widget class="QTextEdit" name="horizontal_textEdit">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>100</x>
        <y>30</y>
        <width>61</width>
        <height>31</height>
@@ -191,10 +191,10 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1920&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_4">
+    <widget class="QTextEdit" name="computer_size_textEdit">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>100</x>
        <y>70</y>
        <width>61</width>
        <height>31</height>
@@ -208,10 +208,10 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;15.6&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_5">
+    <widget class="QTextEdit" name="dpi_textEdit">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>100</x>
        <y>110</y>
        <width>61</width>
        <height>31</height>
@@ -225,10 +225,10 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;141.22&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_6">
+    <widget class="QTextEdit" name="dot_pitch_textEdit">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>100</x>
        <y>150</y>
        <width>61</width>
        <height>31</height>
@@ -242,10 +242,10 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;0.1799&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_7">
+    <widget class="QTextEdit" name="longitudinal_textEdit">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>190</x>
        <y>30</y>
        <width>61</width>
        <height>31</height>
@@ -262,7 +262,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>170</x>
        <y>30</y>
        <width>21</width>
        <height>20</height>
@@ -275,7 +275,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>170</x>
        <y>80</y>
        <width>61</width>
        <height>20</height>
@@ -288,7 +288,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>170</x>
        <y>120</y>
        <width>61</width>
        <height>20</height>
@@ -301,7 +301,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>170</x>
        <y>160</y>
        <width>91</width>
        <height>20</height>
@@ -315,7 +315,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>580</x>
       <y>10</y>
       <width>221</width>
       <height>81</height>
@@ -337,7 +337,7 @@ p, li { white-space: pre-wrap; }
       <string>长：</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_8">
+    <widget class="QTextEdit" name="brick_length_textEdit">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -367,7 +367,7 @@ p, li { white-space: pre-wrap; }
       <string>宽：</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_9">
+    <widget class="QTextEdit" name="brick_width_textEdit">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -391,7 +391,7 @@ p, li { white-space: pre-wrap; }
       <x>820</x>
       <y>780</y>
       <width>1061</width>
-      <height>241</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="title">
@@ -403,7 +403,7 @@ p, li { white-space: pre-wrap; }
        <x>20</x>
        <y>30</y>
        <width>291</width>
-       <height>191</height>
+       <height>171</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -478,7 +478,7 @@ p, li { white-space: pre-wrap; }
        <x>330</x>
        <y>30</y>
        <width>311</width>
-       <height>191</height>
+       <height>221</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -559,7 +559,7 @@ p, li { white-space: pre-wrap; }
        <x>660</x>
        <y>30</y>
        <width>380</width>
-       <height>191</height>
+       <height>221</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -649,7 +649,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>580</x>
       <y>100</y>
       <width>221</width>
       <height>111</height>
@@ -658,7 +658,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>其他设置</string>
     </property>
-    <widget class="QTextEdit" name="textEdit_2">
+    <widget class="QTextEdit" name="room_num_textEdit">
      <property name="geometry">
       <rect>
        <x>110</x>
@@ -678,9 +678,9 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>30</x>
        <y>40</y>
-       <width>61</width>
+       <width>71</width>
        <height>20</height>
       </rect>
      </property>
@@ -688,111 +688,132 @@ p, li { white-space: pre-wrap; }
       <string>房间个数：</string>
      </property>
     </widget>
-    <widget class="QWidget" name="horizontalLayoutWidget">
+    <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>171</width>
-       <height>72</height>
+       <x>10</x>
+       <y>60</y>
+       <width>91</width>
+       <height>41</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>  图纸比例   1：</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTextEdit" name="textEdit">
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+     <property name="text">
+      <string>  图纸比例   1：</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="ratio_textEdit">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>70</y>
+       <width>82</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="choose_pdf_Button">
+   <widget class="QGroupBox" name="groupBox_6">
     <property name="geometry">
      <rect>
-      <x>830</x>
-      <y>720</y>
-      <width>161</width>
-      <height>31</height>
+      <x>1360</x>
+      <y>10</y>
+      <width>481</width>
+      <height>651</height>
      </rect>
     </property>
-    <property name="text">
-     <string>选择PDF文件</string>
+    <property name="title">
+     <string>区域选择框</string>
     </property>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>40</y>
+       <width>251</width>
+       <height>26</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>40</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>请选择房间号：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="room_label">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>431</width>
+       <height>551</height>
+      </rect>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>房间显示位置</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <zorder>comboBox</zorder>
+    <zorder>comboBox</zorder>
+    <zorder>label_13</zorder>
+    <zorder>room_label</zorder>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QGroupBox" name="groupBox_7">
     <property name="geometry">
      <rect>
       <x>830</x>
       <y>10</y>
-      <width>561</width>
+      <width>491</width>
       <height>651</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="0">
-      <widget class="QLabel" name="image_label">
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>图片显示位置</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_5">
-    <property name="geometry">
-     <rect>
-      <x>1020</x>
-      <y>680</y>
-      <width>301</width>
-      <height>80</height>
-     </rect>
-    </property>
     <property name="title">
-     <string>GroupBox</string>
+     <string>图纸显示框</string>
     </property>
-    <widget class="QPushButton" name="analyse_button">
+    <widget class="QLabel" name="drawing_label">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>40</y>
-       <width>81</width>
-       <height>31</height>
+       <x>10</x>
+       <y>30</y>
+       <width>451</width>
+       <height>581</height>
       </rect>
      </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
      <property name="text">
-      <string>数据分析</string>
+      <string>图纸显示位置</string>
      </property>
-     <property name="autoRepeatInterval">
-      <number>100</number>
-     </property>
-     <property name="default">
-      <bool>true</bool>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="cad_label">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>40</y>
+       <y>620</y>
        <width>131</width>
        <height>31</height>
       </rect>
@@ -801,9 +822,83 @@ p, li { white-space: pre-wrap; }
       <bool>false</bool>
      </property>
      <property name="text">
-      <string/>
+      <string>图纸名称</string>
      </property>
     </widget>
+    <zorder>drawing_label</zorder>
+    <zorder>drawing_label</zorder>
+    <zorder>cad_label</zorder>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>1360</x>
+      <y>670</y>
+      <width>481</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="left_Button">
+       <property name="text">
+        <string>左转</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="right_Button">
+       <property name="text">
+        <string>右转</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="confirm_Button">
+    <property name="geometry">
+     <rect>
+      <x>1360</x>
+      <y>715</y>
+      <width>481</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>确认</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>670</y>
+      <width>491</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="choose_pdf_Button">
+       <property name="text">
+        <string>选择PDF文件</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="analyse_button">
+       <property name="text">
+        <string>数据分析</string>
+       </property>
+       <property name="autoRepeatInterval">
+        <number>100</number>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <zorder>formGroupBox</zorder>
    <zorder>graphicsView</zorder>
@@ -811,19 +906,19 @@ p, li { white-space: pre-wrap; }
    <zorder>groupBox_2</zorder>
    <zorder>groupBox_3</zorder>
    <zorder>groupBox_4</zorder>
-   <zorder>choose_pdf_Button</zorder>
-   <zorder>image_label</zorder>
-   <zorder>image_label</zorder>
-   <zorder>gridLayoutWidget</zorder>
-   <zorder>groupBox_5</zorder>
-   <zorder>image_label</zorder>
+   <zorder>groupBox_6</zorder>
+   <zorder>groupBox_7</zorder>
+   <zorder>horizontalLayoutWidget</zorder>
+   <zorder>confirm_Button</zorder>
+   <zorder>left_Button</zorder>
+   <zorder>horizontalLayoutWidget_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1886</width>
+     <width>1861</width>
      <height>23</height>
     </rect>
    </property>

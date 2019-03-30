@@ -17,6 +17,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))  # 获取当前路径
 former_path = dir_path[:dir_path.rfind('/')]
 sys.path.append(former_path+'/network')  # ui视图层
 sys.path.append(former_path+'/cad') # cad操作层
+
 import RTLSClient as rc
 import Pdf2img
 import Analyse_Img as ai
@@ -26,7 +27,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(Main_Window, self).__init__(parent=parent)
         self.setupUi(self)
-        
+
         self.init_anchor()
         self.init_vertex()
         self.init_brick()
@@ -44,49 +45,11 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphicsView.setMouseTracking(True)
         print(self.graphicsView.hasMouseTracking())
 
-        self.choose_pdf_Button.clicked.connect(self.choose_pdf_Button_clicked) # 点击选择
-      
-    
-    def choose_pdf_Button_clicked(self):
-        """  
-            选择PDF文件按钮事件
-        """
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileRoad, _ = QFileDialog.getOpenFileName(
-            self,
-            "选择CAD文件",
-            "",
-            "PDF Files (*.pdf) ;; JPG Files (*.jpg)",
-            options=options)
-        if fileRoad:
-            fileName = os.path.split(fileRoad)[1]  #分离文件名
-            self.cad_label.setText(fileName)  #修改label 的text
-            # self.load_image(fileRoad)
-        pictureName = Pdf2img.pdf2img(fileName)
-        src = cv.imread(pictureName)
-        resizeName = ai.resize(src, 0.47)
-        src = cv.imread(resizeName)
-        cutName = ai.cut_picture_roi(src)
-        self.load_image(cutName)
+        self.choose_pdf_Button.clicked.connect(self.choose_pdf_Button_clicked) # 点击”选择PDF文件“
+        self.analyse_button.clicked.connect(self.analyse_button_clicked) # 点击“数据分析”
+        self.comboBox.activated.connect(self.load_room) # “房间选择”被激活时候的处理
 
-    def load_image(self, image):
-        """  
-            加载图片：
-                1、每次load_image，就清空原来的label.clear()
-                2、setPixmap(pixmap.scaled(size(),KeepAsceptRatio))表示按图像比例显示
-        """
-        # image_label = QLabel(self.image_label)
-
-        self.image_label.clear() #每次选择
-        pixmap = QPixmap(image)
-       
-        self.image_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.image_label.setPixmap(
-            pixmap.scaled(self.image_label.size(),
-                          QtCore.Qt.KeepAspectRatio))  #radio：根据图像比例显示图片
-    
-
+   
     def init_serial(self):
         """ 初始化串口 """
         # 串口检测按钮
@@ -100,7 +63,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         # 接受数据定时器
         self.timer_receive = QTimer(self)
         self.timer_receive.timeout.connect(self.data_receive)
-    
+
     def init_anchor(self):
         """ 初始化基站 """
         self.anchorTable.setItem(0,0, QTableWidgetItem("基站编号"))
@@ -111,7 +74,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.anchorTable.setItem(2,0, QTableWidgetItem("anchor_1"))
         self.anchorTable.setItem(3,0, QTableWidgetItem("anchor_2"))
         self.anchorTable.setItem(4,0, QTableWidgetItem("anchor_3"))
-        
+
         # 初始化anchor_0的X,Y,Z轴
         self.anchorTable.setItem(1,1, QTableWidgetItem("0.00"))
         self.anchorTable.setItem(1,2, QTableWidgetItem("0.00"))
@@ -131,7 +94,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.anchorTable.setItem(4,1, QTableWidgetItem("0.00"))
         self.anchorTable.setItem(4,2, QTableWidgetItem("0.00"))
         self.anchorTable.setItem(4,3, QTableWidgetItem("1.50"))
-    
+
     def init_vertex(self):
         """ 初始化顶点 """
         self.vertexTable.setItem(0, 0, QTableWidgetItem("顶点编号"))
@@ -143,16 +106,16 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
             self.vertexTable.setItem(i+1, 1, QTableWidgetItem("0.00"))
             self.vertexTable.setItem(i+1, 2, QTableWidgetItem("0.00"))
             self.vertexTable.setItem(i+1, 3, QTableWidgetItem("0.00"))
-    
+
     def init_brick(self):
         """ 初始化砖块信息 """
         self.brickTable.insertRow(0) # 列表加上一行
         self.brickTable.setItem(0, 0, QTableWidgetItem("砖块编号"))
         self.brickTable.setItem(0, 1, QTableWidgetItem("X轴 "))
-        self.brickTable.setItem(0, 2, QTableWidgetItem("Y轴 ")) 
+        self.brickTable.setItem(0, 2, QTableWidgetItem("Y轴 "))
         self.brickTable.setItem(0, 3, QTableWidgetItem("已完成？"))
         self.brickTable.setItem(0, 4, QTableWidgetItem("取消?"))
-        
+
         for i in range(20):
             chkBoxItem = QTableWidgetItem()
             chkBoxItem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
@@ -161,7 +124,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.brickTable.itemClicked.connect(self.handleItemClicked)
         self._list = []
-        
+
     def handleItemClicked(self, item):
         """ 点击取消按钮 """
         if item.checkState() == QtCore.Qt.Checked:
@@ -170,7 +133,6 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
             print(self._list)
         else:
             print('"%s" Clicked' % item.text())
-
 
     def port_check(self):
         """ 检测所有串口 """
@@ -182,7 +144,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
             self.s1__box_2.addItem(port[0])
         if len(self.com_dict) == 0:
             self.open_serial_button.setEnabled(False)
-        
+
     def port_open(self):
         """ 打开串口 """
         # self.serial_uwb.port = "COM3"  #串口号
@@ -191,7 +153,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.serial_uwb.bytesize = int(8)  # 数据位
         self.serial_uwb.parity = "N"  # 奇偶性，即校验位
         self.serial_uwb.stopbits = int(1)  # 停止位
-            
+
         # sudo chmod a+rw /dev/ttyACM0 给予权限
 
         try:
@@ -272,7 +234,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
                             anchor = [rc.vec3d(),rc.vec3d(),rc.vec3d(),rc.vec3d()]
                             # anchor_1.x = 3.75  # 单位：米
-                            
+
                             for i in range(4):
                                 anchor[i].x = np.float(self.anchorTable.item(i+1,1).text()) # 取 anchorTable 其中 cell 的值
                                 anchor[i].y = np.float(self.anchorTable.item(i+1,2).text())
@@ -281,10 +243,10 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
                             # anchor_2.y = 7.5
                             tag_position = rc.vec3d()
-                            
+
                             tag_position = self.getLocation(
                                 anchor[0], anchor[1], anchor[2], anchor[3],  range_0, range_1, range_2, range_3, count)
-                            
+
                             print("v = [ %f , %f, %f]" % (tag_position.x, tag_position.y, tag_position.z))
 
                             self.animation(
@@ -341,7 +303,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         width_num = np.int(self.anchor_1[0]/brick_width)
 
         return w,h # 返回长宽
-        
+
     def graphics(self, robot_point=[0, 0]):
         self.init_graphicsView()
         robot_point[0] = robot_point[0] * 100
@@ -350,12 +312,12 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         global bricks  # 全局
         bricks = np.zeros((width_num*height_num, 5), dtype=int)  # 可利用json数据类型
 
-        
+
         """ 砖摆放，从x,y轴出发 """
         for j in range(height_num):
             for i in range(width_num):
 
-                self.brick_x = i*(self.brick_gap+brick_width)   
+                self.brick_x = i*(self.brick_gap+brick_width)
                 self.brick_y = j*(self.brick_gap+brick_height)
 
                 bricks[j * width_num + i] = [i, j, self.brick_x,
@@ -392,7 +354,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 rectangle_item = QGraphicsRectItem(
                     self.brick_x, self.brick_y, brick_width, brick_height)
-                
+
                 scene.addItem(rectangle_item)
         # print(bricks)
 
@@ -407,11 +369,11 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         for brick in bricks:  # 铺完一块砖就覆盖颜色
             if brick[4] == 1:
-                scene.addRect(brick[2], brick[3], brick_width, brick_height, brush = red_brush)    
+                scene.addRect(brick[2], brick[3], brick_width, brick_height, brush = red_brush)
             else:
-                scene.addRect(brick[2], brick[3], brick_width, brick_height, brush = white_brush)    
+                scene.addRect(brick[2], brick[3], brick_width, brick_height, brush = white_brush)
             scene.addRect(0, 0, w, h) # 一定要画出最外的矩形区域
-            
+
 
         robot_item = QGraphicsEllipseItem(
             robot_point[0], robot_point[1], 10, 10)
@@ -443,6 +405,61 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         delta = newPos - oldPos
         self.graphicsView.translate(delta.x(), delta.y())
 
+    def choose_pdf_Button_clicked(self):
+        """
+            选择PDF文件按钮事件
+        """
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileRoad, _ = QFileDialog.getOpenFileName(
+            self,
+            "选择CAD文件",
+            "",
+            "PDF Files (*.pdf) ;; JPG Files (*.jpg)",
+            options=options)
+        if fileRoad:
+            fileName = os.path.split(fileRoad)[1]  #分离文件名
+            self.cad_label.setText("图纸名称：" + fileName)  #修改label 的text
+            # self.load_image(fileRoad)
+        pictureName = Pdf2img.pdf2img(fileName)
+        src = cv.imread(pictureName)
+        resizeName = ai.resize(src, 0.47)
+        src = cv.imread(resizeName)
+        cutName = ai.cut_picture_roi(src)
+        self.load_image(cutName, self.drawing_label)
+
+    def load_image(self, image, image_label):
+        """
+            加载图片：
+                1、每次load_image，就清空原来的label.clear()
+                2、setPixmap(pixmap.scaled(size(),KeepAsceptRatio))表示按图像比例显示
+        """
+        # image_label = self.room_label
+        image_label.clear() #每次选择
+        pixmap = QPixmap(image)
+
+        image_label.setAlignment(QtCore.Qt.AlignCenter)
+        image_label.setPixmap(
+            pixmap.scaled(image_label.size(),
+                          QtCore.Qt.KeepAspectRatio))  #radio：根据图像比例显示图片
+
+    def analyse_button_clicked(self):
+        """ 数据分析 """
+        src = cv.imread('./cut.jpg')
+        num = self.room_num_textEdit.toPlainText()
+        ai.find_contours(src, room_num = int(num))
+
+        self.comboBox.clear()
+        
+        for i in range(int(num)):
+            self.comboBox.addItem(self.tr('contour_' + str(i)))
+        self.load_room()
+    
+    def load_room(self):
+        room_name = self.comboBox.currentText()
+        # if room
+        self.load_image(room_name+'.jpg', self.room_label)
+        print(room_name)
 
 
 if __name__ == '__main__':

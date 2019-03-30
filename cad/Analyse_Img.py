@@ -43,9 +43,6 @@ def max_area_object_measure(image):
     cv.imwrite('./max_area_object_measure.jpg', image)
 
 
-# def inside_contour(image):
-
-
 def cut_picture_roi(image):
     """
         裁剪图片的roi：
@@ -78,7 +75,7 @@ def max_roi(image):
     return contours[0]
 
 
-def find_contours(image):
+def find_contours(image, room_num):
     gray = big_image_binary(image)
     dst = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
     ret, binary = cv.threshold(gray, 0, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
@@ -96,7 +93,7 @@ def find_contours(image):
     #     cv.drawContours(image, contours, i, [0, 0, 255], 2)
     # cv.imwrite("./image.jpg", image)
 
-    room_num = input("请用户输入多少个房间：")
+    # room_num = input("请用户输入多少个房间：")
 
     # len(contours)
     contour_area = []
@@ -184,7 +181,7 @@ def save_contours(img, contours):
         # cv.arrowedLine(img, (x, y+h), (x, y+h-1003), (255, 0, 0), 3)
         # cv.arrowedLine(img, (x, y+h), (x+100, y+h), (255, 0, 0), 3)
 
-        cv.imwrite("save_contour_" + str(num) + ".jpg", img[y:y+h, x:x+w])
+        cv.imwrite("contour_" + str(num) + ".jpg", img[y:y+h, x:x+w])
         num += 1
 
 
