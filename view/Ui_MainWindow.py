@@ -91,7 +91,7 @@ class Ui_MainWindow(object):
         self.label_10.setGeometry(QtCore.QRect(170, 160, 91, 20))
         self.label_10.setObjectName("label_10")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(580, 10, 221, 81))
+        self.groupBox_2.setGeometry(QtCore.QRect(580, 10, 221, 111))
         self.groupBox_2.setObjectName("groupBox_2")
         self.label_11 = QtWidgets.QLabel(self.groupBox_2)
         self.label_11.setGeometry(QtCore.QRect(10, 40, 31, 20))
@@ -105,6 +105,12 @@ class Ui_MainWindow(object):
         self.brick_width_textEdit = QtWidgets.QTextEdit(self.groupBox_2)
         self.brick_width_textEdit.setGeometry(QtCore.QRect(150, 30, 61, 31))
         self.brick_width_textEdit.setObjectName("brick_width_textEdit")
+        self.label_14 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_14.setGeometry(QtCore.QRect(40, 80, 31, 20))
+        self.label_14.setObjectName("label_14")
+        self.brick_gap_textEdit = QtWidgets.QTextEdit(self.groupBox_2)
+        self.brick_gap_textEdit.setGeometry(QtCore.QRect(90, 70, 61, 31))
+        self.brick_gap_textEdit.setObjectName("brick_gap_textEdit")
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_3.setGeometry(QtCore.QRect(820, 750, 1061, 311))
         self.groupBox_3.setObjectName("groupBox_3")
@@ -122,7 +128,7 @@ class Ui_MainWindow(object):
         self.anchorTable.setFont(font)
         self.anchorTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.anchorTable.setAlternatingRowColors(True)
-        self.anchorTable.setRowCount(5)
+        self.anchorTable.setRowCount(4)
         self.anchorTable.setColumnCount(4)
         self.anchorTable.setObjectName("anchorTable")
         self.anchorTable.horizontalHeader().setDefaultSectionSize(72)
@@ -181,7 +187,7 @@ class Ui_MainWindow(object):
         self.brickTable.verticalHeader().setHighlightSections(True)
         self.brickTable.verticalHeader().setMinimumSectionSize(20)
         self.groupBox_4 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_4.setGeometry(QtCore.QRect(580, 100, 221, 111))
+        self.groupBox_4.setGeometry(QtCore.QRect(580, 130, 221, 111))
         self.groupBox_4.setObjectName("groupBox_4")
         self.room_num_textEdit = QtWidgets.QTextEdit(self.groupBox_4)
         self.room_num_textEdit.setGeometry(QtCore.QRect(110, 30, 81, 31))
@@ -311,13 +317,19 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">3</span></p></body></html>"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">1250</span></p></body></html>"))
         self.label_12.setText(_translate("MainWindow", "宽："))
         self.brick_width_textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">3</span></p></body></html>"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">1250</span></p></body></html>"))
+        self.label_14.setText(_translate("MainWindow", "间隙："))
+        self.brick_gap_textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">5</span></p></body></html>"))
         self.groupBox_3.setTitle(_translate("MainWindow", "坐标点设置"))
         self.groupBox_4.setTitle(_translate("MainWindow", "其他设置"))
         self.room_num_textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

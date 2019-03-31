@@ -54,7 +54,6 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.vertexTable.itemChanged.connect(self.graphics)
         self.anchorTable.itemChanged.connect(self.graphics)
-        self.brickTable.itemChanged.connect(self.graphics)
    
     def init_serial(self):
         """ 初始化串口 """
@@ -127,7 +126,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def init_brick(self):
         """ 初始化砖块信息 """
-        self.brickTable.setHorizontalHeaderItem(0, QTableWidgetItem("顶点编号"))
+        self.brickTable.setHorizontalHeaderItem(0, QTableWidgetItem("砖块编号"))
         self.brickTable.setHorizontalHeaderItem(1, QTableWidgetItem("X轴 / mm"))
         self.brickTable.setHorizontalHeaderItem(2, QTableWidgetItem("y轴 / mm"))
         self.brickTable.setHorizontalHeaderItem(3, QTableWidgetItem("已完成？"))
@@ -255,9 +254,9 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
                             # anchor_1.x = 3.75  # 单位：米
 
                             for i in range(4):
-                                anchor[i].x = np.float(self.anchorTable.item(i+1,1).text()) # 取 anchorTable 其中 cell 的值
-                                anchor[i].y = np.float(self.anchorTable.item(i+1,2).text())
-                                anchor[i].z = np.float(self.anchorTable.item(i+1,3).text())
+                                anchor[i].x = np.float(self.anchorTable.item(i,1).text()) # 取 anchorTable 其中 cell 的值
+                                anchor[i].y = np.float(self.anchorTable.item(i,2).text())
+                                anchor[i].z = np.float(self.anchorTable.item(i,3).text())
 
 
                             # anchor_2.y = 7.5
@@ -332,7 +331,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # ------ 再画出所有角点------- # 
         row_count = self.vertexTable.rowCount()
-        vertex = np.zeros((row_count + 1,3), dtype=float) 
+        vertex = np.zeros((row_count,3), dtype=float) 
         print("row count: " + str(row_count))
 
         for i in range(row_count):
@@ -344,16 +343,16 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(row_count):
             scene.addEllipse(
                 vertex[i][0]-4, vertex[i][1]-4, 8, 8, brush=vertex_brush)
-            if i != row_count:
-                scene.addLine(vertex[i][0], vertex[i][1], vertex[i+1][0], vertex[i+1][1], pen=QPen(Qt.black))
+            if i != row_count -1 :
+                scene.addLine(vertex[i][0], vertex[i][1], vertex[i+1][0], vertex[i+1][1], pen=QPen(Qt.blue))
             else:
-                scene.addLine(vertex[i][0], vertex[i][1], vertex[0][0], vertex[0][1], pen=QPen(Qt.black))
+                scene.addLine(vertex[i][0], vertex[i][1], vertex[0][0], vertex[0][1], pen=QPen(Qt.blue))
 
         # 再画出砖块
         global brick_width, brick_height
-        brick_width = 1250/10  # 砖长：300mm
-        brick_height = 1250/10
-        self.brick_gap = 5/10  # 砖间隙：5mm
+        brick_width = int(self.brick_width_textEdit.toPlainText()) / 10  # 砖长：300mm
+        brick_height = int(self.brick_length_textEdit.toPlainText()) / 10
+        self.brick_gap = int(self.brick_gap_textEdit.toPlainText()) / 10 # 砖间隙：5mm
 
         global height_num, width_num
         height_num = np.int(axis_y/brick_height)
@@ -361,14 +360,14 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         return axis_x, axis_y # 返回长宽
 
-    def graphics(self, robot_point=[0, 0]):
+    def graphics(self):
         self.init_graphicsView()
+        robot_point=[0, 0]
         robot_point[0] = robot_point[0] * 100
         robot_point[1] = robot_point[1] * 100
 
         global bricks  # 全局
         bricks = np.zeros((width_num*height_num, 5), dtype=int)  # 可利用json数据类型
-
 
         """ 砖摆放，从x,y轴出发 """
         for j in range(height_num):
@@ -421,6 +420,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         for k in range(height_num * width_num):
             if robot_point[0] >= bricks[k][2] and robot_point[0] <= bricks[k][2] + brick_width and robot_point[1] >= bricks[k][3] and robot_point[1] <= bricks[k][3] + brick_height:
                 bricks[k][4] = 1
+                self.brickTable.setItem(k, 3, QTableWidgetItem("1"))
             # else:
             #     bricks[k][4] = 0
 
@@ -429,7 +429,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
                 scene.addRect(brick[2], brick[3], brick_width, brick_height, brush = red_brush)
             else:
                 scene.addRect(brick[2], brick[3], brick_width, brick_height, brush = white_brush)
-            scene.addRect(0, 0, w, h) # 一定要画出最外的矩形区域
+            # scene.addRect(0, 0, w, h) # 一定要画出最外的矩形区域
 
 
         robot_item = QGraphicsEllipseItem(
@@ -534,18 +534,20 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         """ 点击“确认“按钮，就会传递角点参数给 QgraphicsView 控件，进行绘图 """
         room_name = self.comboBox.currentText() + '.jpg'
         src = cv.imread(room_name)
+
         lines = ai.line_detect(src)
-        print(lines)
         points, pnum = ai.point_detection(src)
         adjacency_matrix = ai.create_adjacency_matrix(points, pnum, lines)
         clockwise, points = ai.points_sort(adjacency_matrix, points, pnum)
-        points = ai.points_exchange_row_and_col(points, pnum)
+        points = ai.points_adjust_row_and_col(points, pnum)
 
         ratio = self.ratio_textEdit.toPlainText()
         dot_pitch = self.dot_pitch_textEdit.toPlainText() # 0.1815
         points = ai.points_to_real_distance(points, pnum, int(ratio), float(dot_pitch))
         self.init_vertex(points)
 
+    def dpi_setting(self):
+        print("dpi_setting")
     
 
 if __name__ == '__main__':

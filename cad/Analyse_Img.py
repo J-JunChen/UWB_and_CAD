@@ -457,7 +457,7 @@ def TheContourContainsLine(line, contours):
     return connected_array
 
 
-def points_exchange_row_and_col(points, pnum):
+def points_adjust_row_and_col(points, pnum):
     """ 
         交换点的横纵坐标，并且将第0点的坐标调整为（0,0）
     """
