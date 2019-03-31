@@ -389,9 +389,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>780</y>
+      <y>750</y>
       <width>1061</width>
-      <height>261</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="title">
@@ -773,10 +773,6 @@ p, li { white-space: pre-wrap; }
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <zorder>comboBox</zorder>
-    <zorder>comboBox</zorder>
-    <zorder>label_13</zorder>
-    <zorder>room_label</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBox_7">
     <property name="geometry">
@@ -825,9 +821,6 @@ p, li { white-space: pre-wrap; }
       <string>图纸名称</string>
      </property>
     </widget>
-    <zorder>drawing_label</zorder>
-    <zorder>drawing_label</zorder>
-    <zorder>cad_label</zorder>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
@@ -861,7 +854,7 @@ p, li { white-space: pre-wrap; }
       <x>1360</x>
       <y>715</y>
       <width>481</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -900,18 +893,6 @@ p, li { white-space: pre-wrap; }
      </item>
     </layout>
    </widget>
-   <zorder>formGroupBox</zorder>
-   <zorder>graphicsView</zorder>
-   <zorder>groupBox</zorder>
-   <zorder>groupBox_2</zorder>
-   <zorder>groupBox_3</zorder>
-   <zorder>groupBox_4</zorder>
-   <zorder>groupBox_6</zorder>
-   <zorder>groupBox_7</zorder>
-   <zorder>horizontalLayoutWidget</zorder>
-   <zorder>confirm_Button</zorder>
-   <zorder>left_Button</zorder>
-   <zorder>horizontalLayoutWidget_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

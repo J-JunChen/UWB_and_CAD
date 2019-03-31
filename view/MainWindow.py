@@ -8,8 +8,8 @@ import serial.tools.list_ports
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox, QPushButton, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsRectItem, QGraphicsEllipseItem, QTableWidgetItem, QFileDialog
-from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QObject, QRectF
-from PyQt5.QtGui import QBrush, QPen, QColor, QPixmap
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QObject, QRectF, QPoint
+from PyQt5.QtGui import QBrush, QPen, QColor, QPixmap, QPolygonF
 
 from Ui_MainWindow import Ui_MainWindow
 
@@ -48,7 +48,13 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.choose_pdf_Button.clicked.connect(self.choose_pdf_Button_clicked) # 点击”选择PDF文件“
         self.analyse_button.clicked.connect(self.analyse_button_clicked) # 点击“数据分析”
         self.comboBox.activated.connect(self.load_room) # “房间选择”被激活时候的处理
+        self.left_Button.clicked.connect(self.left_Button_clicked) # 点击"左转"按钮事件
+        self.right_Button.clicked.connect(self.right_Button_clicked) # 点击"右转"按钮事件
+        self.confirm_Button.clicked.connect(self.confirm_Button_clicked) # 点击"确认"按钮
 
+        self.vertexTable.itemChanged.connect(self.graphics)
+        self.anchorTable.itemChanged.connect(self.graphics)
+        self.brickTable.itemChanged.connect(self.graphics)
    
     def init_serial(self):
         """ 初始化串口 """
@@ -66,61 +72,74 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def init_anchor(self):
         """ 初始化基站 """
-        self.anchorTable.setItem(0,0, QTableWidgetItem("基站编号"))
-        self.anchorTable.setItem(0,1, QTableWidgetItem("X轴 / m"))
-        self.anchorTable.setItem(0,2, QTableWidgetItem("Y轴 / m"))
-        self.anchorTable.setItem(0,3, QTableWidgetItem("Z轴 / m"))
-        self.anchorTable.setItem(1,0, QTableWidgetItem("anchor_0"))
-        self.anchorTable.setItem(2,0, QTableWidgetItem("anchor_1"))
-        self.anchorTable.setItem(3,0, QTableWidgetItem("anchor_2"))
-        self.anchorTable.setItem(4,0, QTableWidgetItem("anchor_3"))
+        self.anchorTable.setHorizontalHeaderItem(0, QTableWidgetItem("基站编号"))
+        self.anchorTable.setHorizontalHeaderItem(1, QTableWidgetItem("X轴 / m"))
+        self.anchorTable.setHorizontalHeaderItem(2, QTableWidgetItem("Y轴 / m"))
+        self.anchorTable.setHorizontalHeaderItem(3, QTableWidgetItem("Z轴 / m"))
+
+        self.anchorTable.setItem(0,0, QTableWidgetItem("anchor_0"))
+        self.anchorTable.setItem(1,0, QTableWidgetItem("anchor_1"))
+        self.anchorTable.setItem(2,0, QTableWidgetItem("anchor_2"))
+        self.anchorTable.setItem(3,0, QTableWidgetItem("anchor_3"))
 
         # 初始化anchor_0的X,Y,Z轴
-        self.anchorTable.setItem(1,1, QTableWidgetItem("0.00"))
-        self.anchorTable.setItem(1,2, QTableWidgetItem("0.00"))
-        self.anchorTable.setItem(1,3, QTableWidgetItem("1.50"))
+        self.anchorTable.setItem(0,1, QTableWidgetItem("0.0"))
+        self.anchorTable.setItem(0,2, QTableWidgetItem("0.0"))
+        self.anchorTable.setItem(0,3, QTableWidgetItem("1.5"))
 
         # 初始化anchor_1的X,Y,Z轴
-        self.anchorTable.setItem(2,1, QTableWidgetItem("3.75"))
-        self.anchorTable.setItem(2,2, QTableWidgetItem("0.00"))
-        self.anchorTable.setItem(2,3, QTableWidgetItem("1.50"))
+        self.anchorTable.setItem(1,1, QTableWidgetItem("3.75"))
+        self.anchorTable.setItem(1,2, QTableWidgetItem("0.0"))
+        self.anchorTable.setItem(1,3, QTableWidgetItem("1.5"))
 
         # 初始化anchor_2的X,Y,Z轴
-        self.anchorTable.setItem(3,1, QTableWidgetItem("0.00"))
-        self.anchorTable.setItem(3,2, QTableWidgetItem("7.50"))
-        self.anchorTable.setItem(3,3, QTableWidgetItem("1.50"))
+        self.anchorTable.setItem(2,1, QTableWidgetItem("0.0"))
+        self.anchorTable.setItem(2,2, QTableWidgetItem("7.5"))
+        self.anchorTable.setItem(2,3, QTableWidgetItem("1.5"))
 
         # 初始化anchor_3的X,Y,Z轴
-        self.anchorTable.setItem(4,1, QTableWidgetItem("0.00"))
-        self.anchorTable.setItem(4,2, QTableWidgetItem("0.00"))
-        self.anchorTable.setItem(4,3, QTableWidgetItem("1.50"))
+        self.anchorTable.setItem(3,1, QTableWidgetItem("0.0"))
+        self.anchorTable.setItem(3,2, QTableWidgetItem("0.0"))
+        self.anchorTable.setItem(3,3, QTableWidgetItem("1.5"))
 
-    def init_vertex(self):
+    def init_vertex(self, points = None):
         """ 初始化顶点 """
-        self.vertexTable.setItem(0, 0, QTableWidgetItem("顶点编号"))
-        self.vertexTable.setItem(0, 1, QTableWidgetItem("X轴 / m"))
-        self.vertexTable.setItem(0, 2, QTableWidgetItem("Y轴 / m"))
-        self.vertexTable.setItem(0, 3, QTableWidgetItem("Z轴 / m"))
-        for i in range(10):
-            self.vertexTable.setItem(i+1, 0, QTableWidgetItem("vertex_"+str(i)))
-            self.vertexTable.setItem(i+1, 1, QTableWidgetItem("0.00"))
-            self.vertexTable.setItem(i+1, 2, QTableWidgetItem("0.00"))
-            self.vertexTable.setItem(i+1, 3, QTableWidgetItem("0.00"))
+        self.vertexTable.setHorizontalHeaderItem(0, QTableWidgetItem("顶点编号"))
+        self.vertexTable.setHorizontalHeaderItem(1, QTableWidgetItem("X轴 / mm"))
+        self.vertexTable.setHorizontalHeaderItem(2, QTableWidgetItem("Y轴 / mm"))
+        self.vertexTable.setHorizontalHeaderItem(3, QTableWidgetItem("Z轴 / mm"))
+        if points is None:
+            row_count = self.vertexTable.rowCount()
+            for i in range(row_count):
+                self.vertexTable.setItem(i, 0, QTableWidgetItem("vertex_"+str(i)))
+                self.vertexTable.setItem(i, 1, QTableWidgetItem("0.0"))
+                self.vertexTable.setItem(i, 2, QTableWidgetItem("0.0"))
+                self.vertexTable.setItem(i, 3, QTableWidgetItem("0.0"))
+        else:
+            self.vertexTable.clearContents()
+            self.vertexTable.setRowCount(len(points)) 
+            for i in range(len(points)):
+                print(points[i])
+                self.vertexTable.setItem(i, 0, QTableWidgetItem("vertex_"+str(i)))
+                self.vertexTable.setItem(i, 1, QTableWidgetItem(str(int(points[i][0]))))
+                self.vertexTable.setItem(i, 2, QTableWidgetItem(str(int(points[i][1]))))
+                self.vertexTable.setItem(i, 3, QTableWidgetItem("0.0"))
 
     def init_brick(self):
         """ 初始化砖块信息 """
+        self.brickTable.setHorizontalHeaderItem(0, QTableWidgetItem("顶点编号"))
+        self.brickTable.setHorizontalHeaderItem(1, QTableWidgetItem("X轴 / mm"))
+        self.brickTable.setHorizontalHeaderItem(2, QTableWidgetItem("y轴 / mm"))
+        self.brickTable.setHorizontalHeaderItem(3, QTableWidgetItem("已完成？"))
+        self.brickTable.setHorizontalHeaderItem(4, QTableWidgetItem("取消"))
+
         self.brickTable.insertRow(0) # 列表加上一行
-        self.brickTable.setItem(0, 0, QTableWidgetItem("砖块编号"))
-        self.brickTable.setItem(0, 1, QTableWidgetItem("X轴 "))
-        self.brickTable.setItem(0, 2, QTableWidgetItem("Y轴 "))
-        self.brickTable.setItem(0, 3, QTableWidgetItem("已完成？"))
-        self.brickTable.setItem(0, 4, QTableWidgetItem("取消?"))
 
         for i in range(20):
             chkBoxItem = QTableWidgetItem()
             chkBoxItem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
             chkBoxItem.setCheckState(QtCore.Qt.Unchecked)
-            self.brickTable.setItem(i+1, 4, chkBoxItem)
+            self.brickTable.setItem(i, 4, chkBoxItem)
 
         self.brickTable.itemClicked.connect(self.handleItemClicked)
         self._list = []
@@ -261,48 +280,86 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         return self.rtls_client.trilaterateTag(range_0, range_1, range_2, range_3, count)
 
     def init_graphicsView(self):
-        """ graphicsView 初始化 """
-        axis_x = 375
-        axis_y = 750
-        w = axis_x
-        h = axis_y
-
-        self.rect = QRectF(0, 0, w, h)
+        """ 
+            graphicsView 初始化 ：
+            1、画出基站矩阵
+            2、画出角点位置，将角点按顺时针连接
+        """
         global scene
-        scene = QGraphicsScene(self.rect)
+        scene = QGraphicsScene()
         self.graphicsView.setScene(scene)
-        scene.addRect(0, 0, w, h)
+        
+        anchor = np.zeros((4,3), dtype=float) # anchor_1.x = 3.75  # 单位：米
 
-        # 画坐标系的四个顶点
-        ellipse_brush = QBrush(QColor.fromRgb(120, 50, 255))
-        scene.addEllipse(
-            0-8, 0-8, 15, 15, brush=ellipse_brush)
-        scene.addEllipse(
-            0-8, h-8, 15, 15, brush=ellipse_brush)
-        scene.addEllipse(
-            w-8, 0-8, 15, 15, brush=ellipse_brush)
-        scene.addEllipse(
-            w-8, h-8, 15, 15, brush=ellipse_brush)
+        for i in range(4):
+            anchor[i][0] = np.float(self.anchorTable.item(i,1).text()) * 100 # 取 anchorTable 其中 cell 的值
+            anchor[i][1] = np.float(self.anchorTable.item(i,2).text()) * 100
+            anchor[i][2] = np.float(self.anchorTable.item(i,3).text()) * 100
 
-        # 画出x, y 轴
-        scene.addLine(0, 0, w, 0, pen=QPen(Qt.red))
-        scene.addLine(0, 0, 0, h, pen=QPen(Qt.red))
+        # -------- 画出基站的四个顶点 ---------#
+        anchor_brush = QBrush(QColor.fromRgb(120, 50, 255))
+        for i in range(4):
+            scene.addEllipse(
+                anchor[i][0]-8, anchor[i][1]-8, 15, 15, brush=anchor_brush)
 
-        # 三个基站的位置
-        self.anchor_0 = np.array([0, 0], dtype=np.int64)
-        self.anchor_1 = np.array([w, 0], dtype=np.int64)
-        self.anchor_2 = np.array([0, h], dtype=np.int64)
+        origin_x = anchor[0][0]
+        origin_y = anchor[0][1]
+        axis_x = anchor[1][0]
+        axis_y = anchor[2][1]
+        
+        # ------- 画出 基站区域 --------#
+        scene.addLine(origin_x, origin_y, axis_x,  anchor[1][1], pen=QPen(Qt.green))
+        scene.addLine(origin_x, origin_y,  anchor[2][0], axis_y, pen=QPen(Qt.green))
 
+        # ------- 画出x, y 轴 ---------#
+        scene.addLine(origin_x, origin_y, axis_x + 20, origin_y, pen=QPen(Qt.red, 4))
+        scene.addLine(origin_x, origin_y, origin_x, axis_y + 20, pen=QPen(Qt.red, 4))
+
+        triangle_0 = [
+            QPoint(origin_x - 10, axis_y+ 20),
+            QPoint(origin_x, axis_y +30),
+            QPoint(origin_x + 10 , axis_y+ 20)
+        ] # Y轴顶上三角形
+
+        triangle_1 = [
+            QPoint(axis_x + 20, origin_y - 10),
+            QPoint(axis_x + 30, origin_y),
+            QPoint(axis_x + 20, origin_y + 10)
+        ] # X轴顶上三角形
+
+        scene.addPolygon(QPolygonF(triangle_0), pen=QPen(Qt.red, 4), brush=QBrush(Qt.red, Qt.SolidPattern))
+        scene.addPolygon(QPolygonF(triangle_1), pen=QPen(Qt.red, 4), brush=QBrush(Qt.red, Qt.SolidPattern))
+
+        # ------ 再画出所有角点------- # 
+        row_count = self.vertexTable.rowCount()
+        vertex = np.zeros((row_count + 1,3), dtype=float) 
+        print("row count: " + str(row_count))
+
+        for i in range(row_count):
+            vertex[i][0] = np.float(self.vertexTable.item(i,1).text()) / 10  # 取 vertexrTable 其中 cell 的值
+            vertex[i][1] = np.float(self.vertexTable.item(i,2).text()) / 10
+            vertex[i][2] = np.float(self.vertexTable.item(i,3).text()) / 10
+
+        vertex_brush = QBrush(QColor.fromRgb(250, 244, 8)) # 红(250) 绿(244) 蓝(8)
+        for i in range(row_count):
+            scene.addEllipse(
+                vertex[i][0]-4, vertex[i][1]-4, 8, 8, brush=vertex_brush)
+            if i != row_count:
+                scene.addLine(vertex[i][0], vertex[i][1], vertex[i+1][0], vertex[i+1][1], pen=QPen(Qt.black))
+            else:
+                scene.addLine(vertex[i][0], vertex[i][1], vertex[0][0], vertex[0][1], pen=QPen(Qt.black))
+
+        # 再画出砖块
         global brick_width, brick_height
         brick_width = 1250/10  # 砖长：300mm
         brick_height = 1250/10
         self.brick_gap = 5/10  # 砖间隙：5mm
 
         global height_num, width_num
-        height_num = np.int(self.anchor_2[1]/brick_height)
-        width_num = np.int(self.anchor_1[0]/brick_width)
+        height_num = np.int(axis_y/brick_height)
+        width_num = np.int(axis_x/brick_width)
 
-        return w,h # 返回长宽
+        return axis_x, axis_y # 返回长宽
 
     def graphics(self, robot_point=[0, 0]):
         self.init_graphicsView()
@@ -328,10 +385,10 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.brick_x, self.brick_y, brick_width, brick_height)
                 scene.addItem(rectangle_item)
 
-                self.brickTable.setItem(j * width_num + i+1 , 0, QTableWidgetItem(str(j * width_num + i)))
-                self.brickTable.setItem(j * width_num + i+1 , 1, QTableWidgetItem(str(self.brick_x)))
-                self.brickTable.setItem(j * width_num + i+1 , 2, QTableWidgetItem(str(self.brick_y)))
-                self.brickTable.setItem(j * width_num + i+1 , 3, QTableWidgetItem("0"))
+                self.brickTable.setItem(j * width_num + i , 0, QTableWidgetItem("brick_" + str(j * width_num + i)))
+                self.brickTable.setItem(j * width_num + i , 1, QTableWidgetItem(str(self.brick_x)))
+                self.brickTable.setItem(j * width_num + i , 2, QTableWidgetItem(str(self.brick_y)))
+                self.brickTable.setItem(j * width_num + i , 3, QTableWidgetItem("0"))
 
         print("robot_position: (%d" %
               robot_point[0]+"，%d" % robot_point[1]+")")
@@ -447,7 +504,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         """ 数据分析 """
         src = cv.imread('./cut.jpg')
         num = self.room_num_textEdit.toPlainText()
-        ai.find_contours(src, room_num = int(num))
+        # ai.find_contours(src, room_num = int(num))
 
         self.comboBox.clear()
         
@@ -461,6 +518,35 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.load_image(room_name+'.jpg', self.room_label)
         print(room_name)
 
+    def left_Button_clicked(self):
+        room_name = self.comboBox.currentText() + '.jpg'
+        src = cv.imread(room_name)
+        ai.rotate_picture(src, img_name = room_name, rotate_direction = 'l')
+        self.load_image(room_name, self.room_label) # 再显示出来
+
+    def right_Button_clicked(self):
+        room_name = self.comboBox.currentText() + '.jpg'
+        src = cv.imread(room_name)
+        ai.rotate_picture(src, img_name = room_name, rotate_direction = 'r')
+        self.load_image(room_name, self.room_label) # 再显示出来
+
+    def confirm_Button_clicked(self):
+        """ 点击“确认“按钮，就会传递角点参数给 QgraphicsView 控件，进行绘图 """
+        room_name = self.comboBox.currentText() + '.jpg'
+        src = cv.imread(room_name)
+        lines = ai.line_detect(src)
+        print(lines)
+        points, pnum = ai.point_detection(src)
+        adjacency_matrix = ai.create_adjacency_matrix(points, pnum, lines)
+        clockwise, points = ai.points_sort(adjacency_matrix, points, pnum)
+        points = ai.points_exchange_row_and_col(points, pnum)
+
+        ratio = self.ratio_textEdit.toPlainText()
+        dot_pitch = self.dot_pitch_textEdit.toPlainText() # 0.1815
+        points = ai.points_to_real_distance(points, pnum, int(ratio), float(dot_pitch))
+        self.init_vertex(points)
+
+    
 
 if __name__ == '__main__':
     main_app = QtWidgets.QApplication(sys.argv)

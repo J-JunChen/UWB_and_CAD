@@ -185,17 +185,17 @@ def save_contours(img, contours):
         num += 1
 
 
-def rotate_picture(img):
+def rotate_picture(img, img_name, rotate_direction):
     """ 旋转图片 """
-    rotate_direction = input("左转还是右转? R/L：")
+    # rotate_direction = input("左转还是右转? R/L：")
 
     if rotate_direction.lower() == 'l':
         left_rotated = cv.rotate(img, cv.ROTATE_90_COUNTERCLOCKWISE)
-        cv.imwrite("./左转90度.jpg", left_rotated)
+        cv.imwrite(img_name, left_rotated)
 
     else:
         right_rotated = cv.rotate(img, cv.ROTATE_90_CLOCKWISE)
-        cv.imwrite("./右转90度.jpg", right_rotated)
+        cv.imwrite(img_name, right_rotated)
 
 
 def line_detect(img):
@@ -253,7 +253,7 @@ def canny_edge_function(image):
 
     # 低阈值：50；高阈值：150
     edge_output = cv.Canny(grad_x, grad_y, 50, 150)
-    cv.imshow("Binary", edge_output)
+    # cv.imshow("Binary", edge_output)
     return edge_output
 
 
@@ -265,14 +265,14 @@ def point_detection(img):
         binary, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     for i, contour in enumerate(contours):
         cv.drawContours(img, contours, i, (0, 255, 0), 1)
-    cv.imshow("Detect_contours", img)
 
     gray = np.float32(gray)
     dst = cv.cornerHarris(gray, 2, 3, 0.04)
 
     dst = cv.dilate(dst, None)
     img[dst > 0.01*dst.max()] = [0, 0, 255]
-    cv.imshow("角点检测", img)
+    # cv.imshow("角点检测", img)
+    cv.imwrite("./Detect_Corner_Points.jpg", img)
 
     height, width = img.shape[:2]
 
@@ -286,7 +286,7 @@ def point_detection(img):
             if pixel[0] == 0 and pixel[1] == 0 and pixel[2] == 255:
                 # img[i, j] = [0, 0, 0]
                 cv.circle(img, (col, row), 5, (0, 255, 0), 5)
-                cv.imwrite("./点图" + str(num) + '.jpg', img)
+                # cv.imwrite("./点图" + str(num) + '.jpg', img)
 
                 # print("row_%d" % num + "：%d" %
                 #       row + ", col_%d " % num + "：%d" % col)
@@ -470,7 +470,7 @@ def points_exchange_row_and_col(points, pnum):
         points[i][1] = zero_row - points[i][1]
 
         # 然后将横纵坐标交换
-        points[i][0], points[i][1] = points[i][1], points[i][0]
+        # points[i][0], points[i][1] = points[i][1], points[i][0]
 
     print("角点坐标整点后：\n", points)
 
@@ -483,30 +483,6 @@ def points_to_real_distance(points, pnum, ratio, dot_pitch):
     real_points = points.astype(np.float)
     real_points *= ratio * dot_pitch
 
-    print(real_points)
+    print("角点实际坐标： \n" , real_points)
     return real_points
 
-
-# src = cv.imread("./cad3.jpg")
-# cv.namedWindow("CAD", cv.WINDOW_AUTOSIZE)
-# cv.imshow("CAD", src)
-# max_area_object_measure(src)
-# cut_picture_roi(src)
-# src = cv.imread("./cut.jpg")
-# find_contours(src)
-
-
-
-""" src = cv.imread('./左转90度.jpg')
-# rotate_picture(src)
-lines = line_detect(src)
-print(lines)
-points, pnum = point_detection(src)
-# contours = create_contours(points, pnum, src)
-adjacency_matrix = create_adjacency_matrix(points, pnum, lines)
-clockwise, points = points_sort(adjacency_matrix, points, pnum)
-points = points_exchange_row_and_col(points, pnum)
-points = points_to_real_distance(points, pnum, 50, 0.1815)
-cv.waitKey(0)
-cv.destroyAllWindows()
- """
