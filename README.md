@@ -7,12 +7,10 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/m
 conda config --set show_channel_urls yes
 ```
 
-- 2、修改pip全局源
-修改 ~/.pip/pip.conf (没有就创建一个)
+- 2、修改pip全局源，修改 ~/.pip/pip.conf (没有就创建一个)
 ```
 [global]
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
-
 ```
 
 ## 安装相应的Python库
@@ -26,7 +24,7 @@ pip install opencv-python==3.4.4.19
 pip install Wand==0.4.4
 ```
 其中pdf读取出现问题，error：412时，解决方案如下：
-- I fixed it for me by editing the /etc/ImageMagick-6/policy.xml and changed the rights for the pdf line to "read":
+--> I fixed it for me by editing the /etc/ImageMagick-6/policy.xml and changed the rights for the pdf line to "read":
 ```
 <policy domain="coder" rights="read" pattern="PDF" />
 ```
