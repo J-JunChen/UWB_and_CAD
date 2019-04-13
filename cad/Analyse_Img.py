@@ -213,6 +213,9 @@ def line_detect(img):
     lines = cv.HoughLinesP(edge, rho=1, theta=np.pi/180,
                            threshold=80, minLineLength=50, maxLineGap=10)
 
+    print("所有直线：", lines)
+    # print(type(lines))
+
     copy_img = np.zeros(img.shape, np.uint8)  # 根据图像的大小来创建一个图像对象
 
     # cv.imshow("emptyImage", copy_img)
@@ -279,6 +282,9 @@ def point_detection(img):
     num = 0
     points = []
 
+    # temp = np.zeros((img.shape[0], img.shape[1]), dtype = np.uint8) 
+    # temp = cv.cvtColor(temp, cv.COLOR_GRAY2BGR)
+
     for row in range(height-1,  -1, -4):
         for col in range(0, width, 4):
             # print("BGR：", img[j, i][0])
@@ -286,7 +292,7 @@ def point_detection(img):
             if pixel[0] == 0 and pixel[1] == 0 and pixel[2] == 255:
                 # img[i, j] = [0, 0, 0]
                 cv.circle(img, (col, row), 5, (0, 255, 0), 5)
-                # cv.imwrite("./点图" + str(num) + '.jpg', img)
+                cv.imwrite("./点图" + str(num) + '.jpg', img)
 
                 # print("row_%d" % num + "：%d" %
                 #       row + ", col_%d " % num + "：%d" % col)
@@ -305,9 +311,8 @@ def point_detection(img):
 
 def estimate_rectangle(points, pnum):
     """ 根据四个点的坐标，判断是否矩形 """
-    if pnum == 4 and points[0]["col"] == points[2]['col'] and points[0]['row'] == points[1]['row'] and points[1]['col'] == points[3]['col']:
+    if pnum == 4 and points[0][0] == points[2][0] and points[0][1] == points[1][1] and points[1][0] == points[3][0]:
         print("是矩形")
-        print("请输入长和宽")
     else:
         print("不是矩形")
     # create_adjacency_matrix(points, pnum)
@@ -349,7 +354,7 @@ def points_sort(adjacency_matrix, points, pnum):
     print("顺时针点排序后：", clockwise)
 
     i = 0
-    clockwise_points = np.zeros((8,2), dtype=np.int32) # 顺时针排序后输出点的坐标,
+    clockwise_points = np.zeros((pnum,2), dtype=np.int32) # 顺时针排序后输出点的坐标,
     for sort in clockwise:
         print("排序后 第 %d" % i + " 点： col: ", points[sort][0], ", row: ", points[sort][1])
         clockwise_points[i] = points[sort]

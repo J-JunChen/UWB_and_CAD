@@ -39,7 +39,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.graphicsView.scale(1,-1) # x轴倒转
         self.init_graphicsView()
-        self.graphics()
+        # self.graphics()
 
         self.setMouseTracking(True)
         self.graphicsView.setMouseTracking(True)
@@ -52,8 +52,8 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.right_Button.clicked.connect(self.right_Button_clicked) # 点击"右转"按钮事件
         self.confirm_Button.clicked.connect(self.confirm_Button_clicked) # 点击"确认"按钮
 
-        self.vertexTable.itemChanged.connect(self.graphics)
-        self.anchorTable.itemChanged.connect(self.graphics)
+        # self.vertexTable.itemChanged.connect(self.graphics)
+        self.anchorTable.itemChanged.connect(self.init_graphicsView)
    
     def init_serial(self):
         """ 初始化串口 """
@@ -123,6 +123,8 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.vertexTable.setItem(i, 1, QTableWidgetItem(str(int(points[i][0]))))
                 self.vertexTable.setItem(i, 2, QTableWidgetItem(str(int(points[i][1]))))
                 self.vertexTable.setItem(i, 3, QTableWidgetItem("0.0"))
+            self.graphics() # QT绘制区域
+            
 
     def init_brick(self):
         """ 初始化砖块信息 """
@@ -132,9 +134,10 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brickTable.setHorizontalHeaderItem(3, QTableWidgetItem("已完成？"))
         self.brickTable.setHorizontalHeaderItem(4, QTableWidgetItem("取消"))
 
-        self.brickTable.insertRow(0) # 列表加上一行
+        row_count = self.brickTable.rowCount() # 砖列表行数
 
-        for i in range(20):
+
+        for i in range(row_count):
             chkBoxItem = QTableWidgetItem()
             chkBoxItem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
             chkBoxItem.setCheckState(QtCore.Qt.Unchecked)
@@ -142,6 +145,13 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.brickTable.itemClicked.connect(self.handleItemClicked)
         self._list = []
+
+        for i in range(row_count):
+            self.brickTable.setItem(i , 0, QTableWidgetItem("brick_" + str(i)))
+            self.brickTable.setItem(i , 1, QTableWidgetItem("0.0"))
+            self.brickTable.setItem(i , 2, QTableWidgetItem("0.0"))
+            self.brickTable.setItem(i , 3, QTableWidgetItem("0"))
+
 
     def handleItemClicked(self, item):
         """ 点击取消按钮 """
@@ -544,6 +554,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         ratio = self.ratio_textEdit.toPlainText()
         dot_pitch = self.dot_pitch_textEdit.toPlainText() # 0.1815
         points = ai.points_to_real_distance(points, pnum, int(ratio), float(dot_pitch))
+        # ai.max_area_object_measure(src)
         self.init_vertex(points)
 
     def dpi_setting(self):
