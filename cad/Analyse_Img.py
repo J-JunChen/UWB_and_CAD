@@ -161,6 +161,9 @@ def quick_sort(array):
 def save_contours(img, contours):
     height, width = img.shape[:2]
 
+    # print(type(contours))
+    # print(len(contours))
+
     num = 0
     for contour in contours:
 
@@ -211,7 +214,7 @@ def line_detect(img):
             maxLineGap = 10：同一直线上两个线段的间隙距离小于10的话，就把两个线段连接起来，当做一条线段
     '''
     lines = cv.HoughLinesP(edge, rho=1, theta=np.pi/180,
-                           threshold=80, minLineLength=50, maxLineGap=10)
+                           threshold=80, minLineLength=50, maxLineGap=10)                       
 
     print("所有直线：", lines)
     # print(type(lines))

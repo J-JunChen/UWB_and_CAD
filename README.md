@@ -39,4 +39,9 @@ pip install PyQt5
 pip install pyserial
 ```
 
+配置完后以后，需要给予串口(ttyACM0) 权限
+```
+sudo chmod a+rw /dev/ttyACM0 
+```
+
 - 5、配置numpy

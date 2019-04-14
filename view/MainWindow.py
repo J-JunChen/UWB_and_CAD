@@ -53,7 +53,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.confirm_Button.clicked.connect(self.confirm_Button_clicked) # 点击"确认"按钮
 
         # self.vertexTable.itemChanged.connect(self.graphics)
-        self.anchorTable.itemChanged.connect(self.init_graphicsView)
+        self.anchorTable.itemChanged.connect(self.graphics)
    
     def init_serial(self):
         """ 初始化串口 """
@@ -69,7 +69,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.timer_receive = QTimer(self)
         self.timer_receive.timeout.connect(self.data_receive)
 
-    def init_anchor(self):
+    def init_anchor(self, points = None):
         """ 初始化基站 """
         self.anchorTable.setHorizontalHeaderItem(0, QTableWidgetItem("基站编号"))
         self.anchorTable.setHorizontalHeaderItem(1, QTableWidgetItem("X轴 / m"))
@@ -100,6 +100,10 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.anchorTable.setItem(3,1, QTableWidgetItem("0.0"))
         self.anchorTable.setItem(3,2, QTableWidgetItem("0.0"))
         self.anchorTable.setItem(3,3, QTableWidgetItem("1.5"))
+
+        if points != None: # 用图像的像素来填充
+            self.anchorTable.setItem(1,1, QTableWidgetItem(str(points[1])))
+            self.anchorTable.setItem(2,2, QTableWidgetItem(str(points[0])))
 
     def init_vertex(self, points = None):
         """ 初始化顶点 """
@@ -182,7 +186,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.serial_uwb.parity = "N"  # 奇偶性，即校验位
         self.serial_uwb.stopbits = int(1)  # 停止位
 
-        # sudo chmod a+rw /dev/ttyACM0 给予权限
+        # sudo chmod a+rw /dev/ttyACM0 #给予权限
 
         try:
             self.serial_uwb.open()
@@ -342,7 +346,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         # ------ 再画出所有角点------- # 
         row_count = self.vertexTable.rowCount()
         vertex = np.zeros((row_count,3), dtype=float) 
-        print("row count: " + str(row_count))
+        # print("row count: " + str(row_count))
 
         for i in range(row_count):
             vertex[i][0] = np.float(self.vertexTable.item(i,1).text()) / 10  # 取 vertexrTable 其中 cell 的值
@@ -392,6 +396,8 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 rectangle_item = QGraphicsRectItem(
                     self.brick_x, self.brick_y, brick_width, brick_height)
+                
+                rectangle_item.setPen(Qt.gray) # setPen:画笔画边框；setBrush:画刷画填充
                 scene.addItem(rectangle_item)
 
                 self.brickTable.setItem(j * width_num + i , 0, QTableWidgetItem("brick_" + str(j * width_num + i)))
@@ -420,7 +426,6 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 rectangle_item = QGraphicsRectItem(
                     self.brick_x, self.brick_y, brick_width, brick_height)
-
                 scene.addItem(rectangle_item)
         # print(bricks)
 
@@ -544,6 +549,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         """ 点击“确认“按钮，就会传递角点参数给 QgraphicsView 控件，进行绘图 """
         room_name = self.comboBox.currentText() + '.jpg'
         src = cv.imread(room_name)
+        
 
         lines = ai.line_detect(src)
         points, pnum = ai.point_detection(src)
@@ -551,11 +557,16 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         clockwise, points = ai.points_sort(adjacency_matrix, points, pnum)
         points = ai.points_adjust_row_and_col(points, pnum)
 
-        ratio = self.ratio_textEdit.toPlainText()
-        dot_pitch = self.dot_pitch_textEdit.toPlainText() # 0.1815
-        points = ai.points_to_real_distance(points, pnum, int(ratio), float(dot_pitch))
+        ratio = int(self.ratio_textEdit.toPlainText())
+        dot_pitch = float(self.dot_pitch_textEdit.toPlainText()) # 0.1815
+
+        points = ai.points_to_real_distance(points, pnum, ratio, dot_pitch)
         # ai.max_area_object_measure(src)
         self.init_vertex(points)
+        
+        src_height = round(src.shape[0] * ratio * dot_pitch / 1000, 2)
+        src_width = round(src.shape[1] * ratio * dot_pitch / 1000, 2)
+        self.init_anchor([src_height, src_width]) #图片像素点长宽填充
 
     def dpi_setting(self):
         print("dpi_setting")
