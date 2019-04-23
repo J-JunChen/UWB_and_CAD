@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         self.label_4.setGeometry(QtCore.QRect(20, 80, 71, 20))
         self.label_4.setObjectName("label_4")
         self.label_5 = QtWidgets.QLabel(self.groupBox)
-        self.label_5.setGeometry(QtCore.QRect(30, 120, 61, 20))
+        self.label_5.setGeometry(QtCore.QRect(60, 120, 51, 20))
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.groupBox)
         self.label_6.setGeometry(QtCore.QRect(60, 160, 31, 20))
@@ -68,9 +68,9 @@ class Ui_MainWindow(object):
         self.computer_size_textEdit = QtWidgets.QTextEdit(self.groupBox)
         self.computer_size_textEdit.setGeometry(QtCore.QRect(100, 70, 61, 31))
         self.computer_size_textEdit.setObjectName("computer_size_textEdit")
-        self.dpi_textEdit = QtWidgets.QTextEdit(self.groupBox)
-        self.dpi_textEdit.setGeometry(QtCore.QRect(100, 110, 61, 31))
-        self.dpi_textEdit.setObjectName("dpi_textEdit")
+        self.ppi_textEdit = QtWidgets.QTextEdit(self.groupBox)
+        self.ppi_textEdit.setGeometry(QtCore.QRect(100, 110, 61, 31))
+        self.ppi_textEdit.setObjectName("ppi_textEdit")
         self.dot_pitch_textEdit = QtWidgets.QTextEdit(self.groupBox)
         self.dot_pitch_textEdit.setGeometry(QtCore.QRect(100, 150, 61, 31))
         self.dot_pitch_textEdit.setObjectName("dot_pitch_textEdit")
@@ -257,7 +257,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.analyse_button)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1861, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1861, 20))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -279,7 +279,7 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(_translate("MainWindow", "dpi设置"))
         self.label_3.setText(_translate("MainWindow", "电脑分辨率："))
         self.label_4.setText(_translate("MainWindow", "电脑尺寸："))
-        self.label_5.setText(_translate("MainWindow", " =   dpi："))
+        self.label_5.setText(_translate("MainWindow", " =  "))
         self.label_6.setText(_translate("MainWindow", "="))
         self.horizontal_textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -291,7 +291,7 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">15.6</span></p></body></html>"))
-        self.dpi_textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.ppi_textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"

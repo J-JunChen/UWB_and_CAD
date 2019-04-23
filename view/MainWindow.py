@@ -33,7 +33,7 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_brick()
 
         self.init_serial()
-        self.setWindowTitle("UWB串口助手")
+        self.setWindowTitle("基于OpenCV工程图的数据提取及其在UWB定位系统的应用")
         self.serial_uwb = serial.Serial()
         self.port_check()
 
@@ -54,6 +54,11 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # self.vertexTable.itemChanged.connect(self.graphics)
         self.anchorTable.itemChanged.connect(self.graphics)
+
+        # dpi设置信号
+        self.horizontal_textEdit.textChanged.connect(self.dpi_setting)
+        self.longitudinal_textEdit.textChanged.connect(self.dpi_setting)
+        self.computer_size_textEdit.textChanged.connect(self.dpi_setting)
    
     def init_serial(self):
         """ 初始化串口 """
@@ -568,9 +573,31 @@ class Main_Window(QtWidgets.QMainWindow, Ui_MainWindow):
         src_width = round(src.shape[1] * ratio * dot_pitch / 1000, 2)
         self.init_anchor([src_height, src_width]) #图片像素点长宽填充
 
+        # lena = cv.imread('./lena.tif')
+        # ai.edge_detection_compare(lena)
+
     def dpi_setting(self):
-        print("dpi_setting")
+        """ 计算PPI和DP """
+        horizontal = int(self.horizontal_textEdit.toPlainText())
+        longitudinal = int( self.longitudinal_textEdit.toPlainText())
+        computer_size =  float(self.computer_size_textEdit.toPlainText())
+
+        # 勾股定理计算像素的斜边
+        piexl_xiebian = np.sqrt(horizontal**2 + longitudinal**2)
+        PPI = np.around( piexl_xiebian/computer_size, 2)
+        self.ppi_textEdit.clear()
+        self.ppi_textEdit.insertPlainText(str(PPI))
+
+        # 计算电脑尺寸到毫米的变化：1英寸 = 25.4mm
+        computer_mm = computer_size * 25.4
+        DP = np.around(computer_mm/piexl_xiebian, 4)
+        self.dot_pitch_textEdit.clear()
+        self.dot_pitch_textEdit.insertPlainText(str(DP))
+        
+        print(PPI)
+
     
+
 
 if __name__ == '__main__':
     main_app = QtWidgets.QApplication(sys.argv)

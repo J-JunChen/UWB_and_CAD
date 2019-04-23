@@ -494,3 +494,51 @@ def points_to_real_distance(points, pnum, ratio, dot_pitch):
     print("角点实际坐标： \n" , real_points)
     return real_points
 
+def edge_detection_compare(img):
+    print(img.shape)
+    # print("edge_detection_compare")
+    # img = cv2.imread('lena.jpg')
+    gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    img_gaussian = cv.GaussianBlur(gray,(3,3),0)
+
+    #canny
+    img_canny = cv.Canny(img,100,200)
+
+    #sobel
+    img_sobelx = cv.Sobel(img_gaussian,cv.CV_8U,1,0,ksize=5)
+    img_sobely = cv.Sobel(img_gaussian,cv.CV_8U,0,1,ksize=5)
+    img_sobel = img_sobelx + img_sobely
+
+
+    #prewitt
+    kernelx = np.array([[1,1,1],[0,0,0],[-1,-1,-1]])
+    kernely = np.array([[-1,0,1],[-1,0,1],[-1,0,1]])
+    img_prewittx = cv.filter2D(img_gaussian, -1, kernelx)
+    img_prewitty = cv.filter2D(img_gaussian, -1, kernely)
+
+    #roberts
+    kernel_x = np.array([[-1,0],[0,1]])
+    kernel_y = np.array([[0,-1],[1,0]])
+    img_robertsx = cv.filter2D(img_gaussian,-1, kernel_x)
+    img_robertsy = cv.filter2D(img_gaussian,-1, kernel_y)
+
+
+
+
+    cv.imshow("Original Image", img)
+    cv.imwrite("Canny.jpg", img_canny)
+    # cv.imshow("Sobel X", img_sobelx)
+    # cv.imshow("Sobel Y", img_sobely)
+    cv.imwrite("Sobel.jpg", img_sobel)
+    # cv.imshow("Prewitt X", img_prewittx)
+    # cv.imshow("Prewitt Y", img_prewitty)
+    cv.imwrite("Prewitt.jpg", img_prewittx + img_prewitty)
+
+    #Laplacian
+    img_laplacian = cv.Laplacian(img, cv.CV_64F)
+    cv.imwrite("Laplacian.jpg", img_laplacian)
+
+    #Roberts
+    cv.imwrite("Roberts.jpg", img_robertsx+img_robertsy)
+
+    print("edge_compaire")
