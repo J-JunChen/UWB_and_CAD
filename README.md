@@ -1,6 +1,6 @@
 # UWB and CAD
 ## 上位机软件工作图
-![](https://github.com/J-JunChen/UWB_and_CAD/blob/master/framework.gif)
+![image](https://github.com/J-JunChen/UWB_and_CAD/blob/master/framework.gif)
 
 ## 配置python3.6环境
 - 1、修改conda的源
