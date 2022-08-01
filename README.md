@@ -12,7 +12,7 @@
 
 - 利用角点定位排序法实现将房间区域等比例地绘制到 Qt 界面上，解决了人工手动绘制的问题，实现了自动化处理工程图的效果。[Qt Framework](https://github.com/J-JunChen/UWB_and_CAD/blob/master/view/MainWindow.py)
 
-- 利用 serial 函数库实现与机器人的通信，并结合超宽带(UWB)定位技术计算出机器人在房间中的实时位置，并绘制在上位机中，协助远程操作员观察机器人在上位机中的模拟位置。[Serial module](https://github.com/J-JunChen/UWB_and_CAD/blob/master/model/Serial.py); [Location module](https://github.com/J-JunChen/UWB_and_CAD/blob/3ee057cce3ee7c3180d255fff531b3393978a25c/network/trilateration.cpp#L637)
+- 利用 serial 函数库实现与机器人的通信，并结合超宽带(UWB)定位技术计算出机器人在房间中的实时位置，并绘制在上位机中，协助远程操作员观察机器人在上位机中的模拟位置。[Serial module](https://github.com/J-JunChen/UWB_and_CAD/blob/master/model/Serial.py); [Location module](https://github.com/J-JunChen/UWB_and_CAD/blob/3ee057cce3ee7c3180d255fff531b3393978a25c/network/trilateration.cpp#L637); [Qt dynamic-mapping module](https://github.com/J-JunChen/UWB_and_CAD/blob/2c66a5d671fd5e0f739e1f5259dacdb7e0f1d4b7/view/MainWindow.py#L420)
 
 - 利用混合编程技术实现将定位算法集成到 C++ 文件中，缓解了 Python 语言执行效率低的问题，带来了机器人实时定位的效果。[Mixed programming](https://github.com/J-JunChen/UWB_and_CAD/tree/master/network)
 
