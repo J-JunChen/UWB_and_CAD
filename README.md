@@ -16,6 +16,9 @@
 
 - 利用混合编程技术实现将定位算法集成到 C++ 文件中，缓解了 Python 语言执行效率低的问题，带来了机器人实时定位的效果。[Mixed programming](https://github.com/J-JunChen/UWB_and_CAD/tree/master/network)
 
+## 系统总流程图
+![image](https://github.com/J-JunChen/tex/blob/master/thesis/graphics/%E6%AF%95%E8%AE%BE%E6%80%BB%E6%B5%81%E7%A8%8B%E5%9B%BEv2.jpg)
+
 
 ## 配置python3.6环境
 - 1、修改conda的源
