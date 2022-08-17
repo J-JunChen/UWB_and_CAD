@@ -12,11 +12,13 @@ Supported the remote operator to communicate with robot through the GUI platform
 ## 上位机软件工作图
 ![image](https://github.com/J-JunChen/UWB_and_CAD/blob/master/framework.gif)
 
-涉及技术：Python + PyQt5 + OpenCV + 混合编程
+### 涉及技术：
+Python + PyQt5 + OpenCV + 混合编程
 
-项目背景：帮助远程操作员通过上位机与铺砖机器人实现通信，并在上位机中观察机器人在房间中的实时定位和砖块铺设情况反馈。
+### 项目背景：
+帮助远程操作员通过上位机与铺砖机器人实现通信，并在上位机中观察机器人在房间中的实时定位和砖块铺设情况反馈。
 
-技术要点：
+### 技术要点：
 
 - 利用 OpenCV 库函数对 CAD 工程图纸进行房间区域的划分，解决了人工手动划分的困难。[Image Processing module](https://github.com/J-JunChen/UWB_and_CAD/blob/master/cad/Analyse_Img.py)
 
@@ -26,11 +28,13 @@ Supported the remote operator to communicate with robot through the GUI platform
 
 - 利用混合编程技术实现将定位算法集成到 C++ 文件中，缓解了 Python 语言执行效率低的问题，带来了机器人实时定位的效果。[Mixed programming](https://github.com/J-JunChen/UWB_and_CAD/tree/master/network)
 
-## 系统总流程图
+---
+
+### 系统总流程图
 ![image](https://github.com/J-JunChen/tex/blob/master/thesis/graphics/%E6%AF%95%E8%AE%BE%E6%80%BB%E6%B5%81%E7%A8%8B%E5%9B%BEv2.jpg)
 
 
-## 配置python3.6环境
+### 配置python3.6环境
 - 1、修改conda的源
 ```
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
@@ -44,7 +48,7 @@ conda config --set show_channel_urls yes
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-## 安装相应的Python库
+### 安装相应的Python库
 - 1、配置OpenCV
 ``` 
 pip install opencv-python==3.4.4.19
