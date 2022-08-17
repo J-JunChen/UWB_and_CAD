@@ -1,11 +1,13 @@
 # UWB and CAD
 ## GUI Platform for Mobile Tiling Robot
-### Summary
-	Supported the remote operator to communicate with robot through the GUI platform, and observe the real-time indoor positioning of the robot and the feedback of tile laying situation in the GUI.
+### Summary：
+Supported the remote operator to communicate with robot through the GUI platform, and observe the real-time indoor positioning of the robot and the feedback of tile laying situation in the GUI.
+
 ### Project Highlights:
 - Applied OpenCV and QT to analyze the CAD drawings and redraw the room area to the GUI platform automatically that can reduce at least 2 hours for manual work per drawing.
 - Used serial library to communicate with robot and calculated the localization of the robot via ultra-wideband technology as well as displayed the virtual position of the robot in the GUI. 
 
+---
 
 ## 上位机软件工作图
 ![image](https://github.com/J-JunChen/UWB_and_CAD/blob/master/framework.gif)
